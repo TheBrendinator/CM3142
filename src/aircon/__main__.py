@@ -7,12 +7,11 @@ import logging.config
 from lib import config
 
 
-# i have no idea why this works but basically after this import, any other
-# module this file uses follows the same config
-logging.config.dictConfig(config.get_log_config())
-
-
 if __name__ == "__main__":
+    # i have no idea why this works but basically after this import, any other
+    # module this file uses follows the same config
+    logging.config.dictConfig(config.get_log_config())
+
     # opting to keep these separate, no reason but it feels right enough
     gather_queue = Queue()
     writer_queue = Queue()
@@ -38,6 +37,7 @@ if __name__ == "__main__":
 
     processor.start()
     writer.start()
+    controller.start()
 
     try:
         while True:
@@ -49,3 +49,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         processor.kill()
         writer.kill()
+        controller.kill()
