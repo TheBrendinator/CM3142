@@ -17,13 +17,11 @@ def main(q: Queue):
             does_file_exist = False
         data: ClimateData = q.get()
         write(data, does_file_exist)
-        logging.debug(data)
-        logging.debug("Data Received")
 
 
 def write(data: ClimateData, does_file_exist: bool):
     with open("climate_sensor.csv", "a", newline="") as csvfile:
-        fields = ["time", "humidity", "temperature"]
+        fields = ["time_recorded", "humidity", "temperature"]
         writer = csv.DictWriter(csvfile, fieldnames=fields)
         if not does_file_exist:
             writer.writeheader()
