@@ -1,2 +1,5 @@
 *__pycache__
 /dist
+/venv
+/climate_sensor.csv
+/mise.toml

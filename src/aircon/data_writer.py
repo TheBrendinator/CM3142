@@ -1,11 +1,10 @@
-from src.lib.data_types import ClimateData
+from lib.data_types import ClimateData
 import csv
 from pathlib import Path
 from multiprocessing import Queue
 import logging
 
 __logging_enabled: bool = False
-__file_exist: bool = False
 
 
 def enable_logging():
@@ -13,23 +12,27 @@ def enable_logging():
 
 
 def main(q: Queue):
-    print("Receiver Started")
+    logging.debug("Receiver Started")
 
-    if not Path("climate_sensor.csv").exists():
-        __does_file_exist = True
+    does_file_exist: bool = False
 
     while True:
+        if Path("climate_sensor.csv").exists():
+            does_file_exist = True
+        else:
+            does_file_exist = False
         data: ClimateData = q.get()
-        write(data)
+        write(data, does_file_exist)
         if __logging_enabled:
             logging.debug(data)
             logging.debug("Data Received")
 
 
-def write(data: ClimateData):
+def write(data: ClimateData, does_file_exist: bool):
     with open("climate_sensor.csv", "a", newline="") as csvfile:
-        fields = ["timestamp", "humidity", "temperature"]
+        fields = ["time", "humidity", "temperature"]
         writer = csv.DictWriter(csvfile, fieldnames=fields)
-        if not __file_exist:
+        if not does_file_exist:
             writer.writeheader()
+            does_file_exist = True
         writer.writerow(data)
