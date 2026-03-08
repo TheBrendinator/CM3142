@@ -1,11 +1,16 @@
 import data_gatherer
 import data_writer
 from multiprocessing import Process, Queue
+import logging.config
+from lib import config
+
+
+# i have no idea why this works but basically after this import, any other
+# module this file uses follows the same config
+logging.config.dictConfig(config.get_log_config())
+
 
 if __name__ == "__main__":
-    # data_gatherer.enable_logging()
-    # data_writer.enable_logging()
-
     # opting to keep these separate, no reason but it feels right enough
     gather_data = Queue()
     send_data = Queue()

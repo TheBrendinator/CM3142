@@ -1,15 +1,9 @@
 from lib.data_types import ClimateData
+import logging
 from sense_emu import SenseHat
 import threading
 from multiprocessing import Lock, Queue
 from time import asctime, sleep
-import logging
-
-__logging_enabled: bool = False
-
-
-def enable_logging():
-    __logging_enabled = True
 
 
 class __ClimateDataProcesser:
@@ -27,11 +21,11 @@ class __ClimateDataProcesser:
 
     def get_dict(self):
         self.__lock.acquire()
-        dd = ClimateData(
-            time=self.__current_time,
-            temperature=self.__temperature,
-            humidity=self.__humidity,
-        )
+        dd: ClimateData = {
+            "time_recorded":self.__current_time,
+            "temperature":self.__temperature,
+            "humidity":self.__humidity
+        }
         self.__lock.release()
         return dd
 
@@ -94,13 +88,11 @@ def main(q: Queue):
         cl.record(sense)
         cl.get_averages()
 
-        if __logging_enabled:
-            logging.debug("Recording Finished")
+        logging.debug("Recording Finished")
 
 
 def __push_data(q: Queue):
     while True:
         sleep(1)
         q.put(cl.get_dict())
-        if __logging_enabled:
-            logging.debug("Data Sent")
+        logging.debug("Data Sent")

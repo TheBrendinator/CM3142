@@ -4,12 +4,6 @@ from pathlib import Path
 from multiprocessing import Queue
 import logging
 
-__logging_enabled: bool = False
-
-
-def enable_logging():
-    __logging_enabled = True
-
 
 def main(q: Queue):
     logging.debug("Receiver Started")
@@ -23,9 +17,8 @@ def main(q: Queue):
             does_file_exist = False
         data: ClimateData = q.get()
         write(data, does_file_exist)
-        if __logging_enabled:
-            logging.debug(data)
-            logging.debug("Data Received")
+        logging.debug(data)
+        logging.debug("Data Received")
 
 
 def write(data: ClimateData, does_file_exist: bool):

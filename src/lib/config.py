@@ -1,7 +1,7 @@
 import logging
 
 
-def logConfig():
+def get_log_config():
     loggingConfig = {
         "version": 1,
         "formatters": {
@@ -11,7 +11,7 @@ def logConfig():
         },
         "handlers": {
             "console": {
-                "class": logging.StreamHandler,
+                "class": "logging.StreamHandler",
                 "level": "DEBUG",
                 "formatter": "simple",
                 "stream": "ext://sys.stdout",
@@ -19,7 +19,7 @@ def logConfig():
         },
         "loggers": {
             "": {
-                "level": logging.DEBUG,
+                "level": "DEBUG",
                 "handlers": ["console"],
                 "propagate": False,
             }
