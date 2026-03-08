@@ -14,4 +14,7 @@ def main(q: Queue):
 
         if temperature > 23 or (humidity > 50 and temperature > 18):
             aircon = True
-            logging.debug(f"aircon: {aircon}")
+        else:
+            aircon = False
+
+        logging.debug(f"aircon: {aircon}")
