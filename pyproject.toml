@@ -1,0 +1,17 @@
+[project]
+dependencies = ["setuptools", "PyGObject", "sense_emu"]
+name = "cm3142"
+version = "0.0.3"
+description = "IoT System Control"
+readme = "README.md"
+requires-python = ">=3.11, < 3.12"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools]
+packages = ["lib", "aircon"]
