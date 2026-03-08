@@ -1,6 +1,3 @@
-import logging
-
-
 def get_log_config():
     loggingConfig = {
         "version": 1,
