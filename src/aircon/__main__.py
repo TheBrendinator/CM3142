@@ -1,5 +1,6 @@
 import data_gatherer
 import data_writer
+import controller
 from multiprocessing import Process, Queue
 from lib.data_types import ClimateData
 import logging.config
@@ -13,19 +14,26 @@ logging.config.dictConfig(config.get_log_config())
 
 if __name__ == "__main__":
     # opting to keep these separate, no reason but it feels right enough
-    gather_data = Queue()
-    send_data = Queue()
+    gather_queue = Queue()
+    writer_queue = Queue()
+    controller_queue = Queue()
 
     processor = Process(
         name="DataProcessor",
         target=data_gatherer.main,
-        args=(gather_data,),
+        args=(gather_queue,),
     )
 
     writer = Process(
         name="DataReceiver",
         target=data_writer.main,
-        args=(send_data,),
+        args=(writer_queue,),
+    )
+
+    controller = Process(
+        name="AirController",
+        target=controller.main,
+        args=(controller_queue,),
     )
 
     processor.start()
@@ -33,9 +41,10 @@ if __name__ == "__main__":
 
     try:
         while True:
-            # this is done here in the event any other components get added that require sending data multiple times
-            data: ClimateData = gather_data.get()
-            send_data.put(data)
+            # TODO: make it run in parallel or whateva
+            data: ClimateData = gather_queue.get()
+            writer_queue.put(data)
+            controller_queue.put(data)
 
     except KeyboardInterrupt:
         processor.kill()
