@@ -22,21 +22,21 @@ if __name__ == "__main__":
         args=(gather_data,),
     )
 
-    receiver = Process(
+    writer = Process(
         name="DataReceiver",
         target=data_writer.main,
         args=(send_data,),
     )
 
     processor.start()
-    receiver.start()
+    writer.start()
 
     try:
         while True:
             # this is done here in the event any other components get added that require sending data multiple times
-            data: ClimateData  = gather_data.get()
+            data: ClimateData = gather_data.get()
             send_data.put(data)
 
     except KeyboardInterrupt:
         processor.kill()
-        receiver.kill()
+        writer.kill()
