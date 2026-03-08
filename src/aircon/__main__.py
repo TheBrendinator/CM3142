@@ -1,6 +1,7 @@
 import data_gatherer
 import data_writer
 from multiprocessing import Process, Queue
+from lib.data_types import ClimateData
 import logging.config
 from lib import config
 
@@ -33,7 +34,7 @@ if __name__ == "__main__":
     try:
         while True:
             # this is done here in the event any other components get added that require sending data multiple times
-            data = gather_data.get()
+            data: ClimateData  = gather_data.get()
             send_data.put(data)
 
     except KeyboardInterrupt:
