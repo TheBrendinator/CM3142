@@ -7,7 +7,7 @@ from time import asctime, sleep
 
 
 class __ClimateDataProcesser:
-    def __init__(self, humidity, temperature):
+    def __init__(self, humidity: float, temperature: float):
         self.__current_time: str = asctime()
         self.__humidity: float = humidity
         self.__temperature: float = temperature
@@ -43,7 +43,7 @@ class __ClimateDataProcesser:
         self.__listTemperature = self.__listTemperature[-self.max_list_size() :]
         self.__listHumidity = self.__listHumidity[-self.max_list_size() :]
 
-    def __get_average(self, list):
+    def __get_average(self, list: list[float]):
         avg: float = 0
         for val in list:
             avg = val
