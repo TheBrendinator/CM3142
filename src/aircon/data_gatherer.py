@@ -22,9 +22,9 @@ class __ClimateDataProcesser:
     def get_dict(self):
         self.__lock.acquire()
         dd: ClimateData = {
-            "time_recorded":self.__current_time,
-            "temperature":self.__temperature,
-            "humidity":self.__humidity
+            "time_recorded": self.__current_time,
+            "temperature": self.__temperature,
+            "humidity": self.__humidity,
         }
         self.__lock.release()
         return dd
@@ -88,11 +88,8 @@ def main(q: Queue):
         cl.record(sense)
         cl.get_averages()
 
-        logging.debug("Recording Finished")
-
 
 def __push_data(q: Queue):
     while True:
         sleep(1)
         q.put(cl.get_dict())
-        logging.debug("Data Sent")
