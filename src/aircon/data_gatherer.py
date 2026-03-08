@@ -1,5 +1,4 @@
 from lib.data_types import ClimateData
-import logging
 from sense_emu import SenseHat
 import threading
 from multiprocessing import Lock, Queue
