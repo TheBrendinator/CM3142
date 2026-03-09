@@ -1,4 +1,3 @@
-from lib.data_types import ClimateData
 import csv
 from pathlib import Path
 from multiprocessing import Queue
@@ -15,13 +14,13 @@ def main(q: Queue):
             does_file_exist = True
         else:
             does_file_exist = False
-        data: ClimateData = q.get()
+        data: dict = q.get()
         write(data, does_file_exist)
 
 
-def write(data: ClimateData, does_file_exist: bool):
+def write(data: dict, does_file_exist: bool):
     with open("climate_sensor.csv", "a", newline="") as csvfile:
-        fields = ["time_recorded", "humidity", "temperature"]
+        fields = data.keys()
         writer = csv.DictWriter(csvfile, fieldnames=fields)
         if not does_file_exist:
             writer.writeheader()
